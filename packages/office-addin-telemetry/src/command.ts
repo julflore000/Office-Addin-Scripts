@@ -25,7 +25,7 @@ export function listTelemetryGroups(command: commander.Command): void {
       const telemetryJsonData = readTelemetryJsonData(telemetryConfigFilePath);
       console.log(chalk.default.blue(`\nTelemetry groups and enabled settings listed in ${telemetryConfigFilePath}:\n`));
       for (const key of Object.keys(telemetryJsonData.telemetryInstances)) {
-         console.log(`${key}: ${telemetryJsonData.telemetryInstances[key]}`);
+         console.log(`${key}:\n telemetryEnabled:${telemetryJsonData.telemetryInstances[key].telemetryEnabled}\n`);
       }
    } else {
       console.log(chalk.default.red(`No telemetry configuration file found at ${telemetryConfigFilePath}`));
@@ -37,15 +37,15 @@ function modifyTelemetryConfigSetting(telemetryGroupName: string, enable: boolea
       if (fs.existsSync(telemetryConfigFilePath)) {
          const telemetryJsonData = readTelemetryJsonData(telemetryJsonFilePath);
          if (groupNameExists(telemetryJsonData, telemetryGroupName)) {
-            if (telemetryJsonData.telemetryInstances[telemetryGroupName] === enable) {
+            if (telemetryJsonData.telemetryInstances[telemetryGroupName].telemetryEnabled === enable) {
                console.log(chalk.default.yellow(`\nTelemetry is already set to ${enable} for telemetry group: ${chalk.default.blue(telemetryGroupName)}\n`));
             } else {
-               telemetryJsonData.telemetryInstances[telemetryGroupName] = enable;
+               telemetryJsonData.telemetryInstances[telemetryGroupName].telemetryEnabled = enable;
                writeTelemetryJsonData(telemetryJsonData, telemetryConfigFilePath);
                console.log(chalk.default.green(`\nTelemetry has been set to ${enable} for ${chalk.default.blue(telemetryGroupName)}\n`));
             }
          } else {
-            console.log(chalk.default.yellow(`\nTelemetry group name ${telemetryGroupName} not found in ${telemetryConfigFilePath}\n`));
+            console.log(chalk.default.yellow(`\nTelemetry group name ${chalk.default.blue(telemetryGroupName)} not found in ${telemetryConfigFilePath}\n`));
          }
       } else {
          console.log(chalk.default.red(`\nNo telemetry configuration file found at ${telemetryConfigFilePath}\n`));

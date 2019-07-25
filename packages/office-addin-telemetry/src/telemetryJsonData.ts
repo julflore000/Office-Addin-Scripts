@@ -47,10 +47,8 @@ export function writeTelemetryJsonData(jsonData: any, jsonFilePath: string): voi
  * @param telemetryEnabled specifies whether opted into telemetry collection
  * @param jsonFilePath Path to the json config file
  */
-export function writeNewTelemetryJsonFile(groupName: string, telemetryEnabled, jsonFilePath: string): void {
-    let jsonData = {};
-    jsonData[groupName] = telemetryEnabled;
-    jsonData = { telemetryInstances: jsonData };
+export function writeNewTelemetryJsonFile(groupName: string, telemetryEnabled: boolean, jsonFilePath: string): void {
+    const jsonData = { telemetryInstances: {[groupName]: {telemetryEnabled}} };
     writeTelemetryJsonData(jsonData, jsonFilePath);
 }
 
